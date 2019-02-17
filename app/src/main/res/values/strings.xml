@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Service</string>
+    <string name="enter_model">Enter model</string>
+    <string name="enter_customer">Enter device owner</string>
+    <string name="save">Save</string>
+    <!-- main fragment -->
+    <string name="main_fragment_action_mode_title">Count: %1$d</string>
+</resources>

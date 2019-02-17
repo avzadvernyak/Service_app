@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <EditText
+            android:id="@+id/serialTextView"
+            android:hint="Enter or scan S/N"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="100dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/scanCodebutton"/>
+    <ImageButton
+            android:id="@+id/scanCodebutton"
+            android:src="@drawable/ic_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/serialTextView"
+            app:layout_constraintTop_toTopOf="@+id/serialTextView"
+            app:layout_constraintStart_toEndOf="@+id/serialTextView"
+            android:layout_marginStart="8dp"/>
+
+    <TextView
+            android:id="@+id/modelTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" android:layout_marginTop="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/serialTextView"
+            android:text="Choice model"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/modelRequestbutton"/>
+    <ImageButton
+            android:id="@+id/modelRequestbutton"
+            android:src="@drawable/ic_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toTopOf="@+id/modelTextView"
+            app:layout_constraintStart_toEndOf="@+id/modelTextView"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/modelTextView"/>
+    <TextView
+            android:id="@+id/customerTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/modelTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            android:text="Choice castomer"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/ownerRequestbutton"/>
+    <ImageButton
+            android:id="@+id/ownerRequestbutton"
+            android:src="@drawable/ic_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/customerTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/customerTextView"
+            app:layout_constraintStart_toEndOf="@+id/customerTextView"
+            android:layout_marginStart="8dp"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addNewRepairButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
