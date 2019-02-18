@@ -6,6 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import kampukter.service.data.Customer
 import kampukter.service.data.Models
+import kampukter.service.data.Repair
+import kampukter.service.data.RepairsView
 import kampukter.service.data.repository.CustomerRepository
 import kampukter.service.data.repository.ModelsRepository
 import kampukter.service.data.repository.RepairRepository
@@ -26,11 +28,37 @@ class ServiceViewModel(
     *
     */
     val repair = repairRepository.getAll()
+
+    fun addRepair(repair: Repair) {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            repairRepository.add(repair)
+        }
+    }
+
     /*
    * RepairsView
    *
    */
     val repairsView = repairsViewRepository.getAll()
+
+    private val _querySeriaNumber = MutableLiveData<Long>()
+    fun setQuerySerialNumber(query: Long) {
+        _querySeriaNumber.postValue(query)
+    }
+
+    fun clearSearchSerialNumber() {
+        _querySeriaNumber.postValue(0L)
+    }
+
+    val repairs: LiveData<List<RepairsView>> =
+        Transformations.switchMap(_querySeriaNumber) { query -> repairsViewRepository.getRepairSerNum(query) }
+
+    private val _selected = MutableLiveData<List<Long>>()
+    fun setSelected(selected: List<Long>) {
+        _selected.postValue(selected)
+    }
+    val repairToSend: LiveData<String> =
+        Transformations.switchMap(_selected) { query -> repairsViewRepository.getSelectedItemsForSend(query) }
 
     /*
     * Model Entity
@@ -39,9 +67,11 @@ class ServiceViewModel(
     private val _queryModel = MutableLiveData<String>()
     val models: LiveData<List<Models>> =
         Transformations.switchMap(_queryModel) { query -> modelsRepository.searchModel("%$query%") }
+
     fun setQuery(query: String) {
         _queryModel.postValue(query)
     }
+
     fun clearSearch() {
         _queryModel.postValue("")
     }
@@ -50,6 +80,7 @@ class ServiceViewModel(
     private val _id = MutableLiveData<Long>()
     val modelId: LiveData<Models> =
         Transformations.switchMap(_id) { id -> modelsRepository.getModelId(id) }
+
     fun setModelId(id: Long) {
         _id.postValue(id)
     }
@@ -59,6 +90,7 @@ class ServiceViewModel(
             modelsRepository.add(Models(title = model))
         }
     }
+
     fun delAll() {
         GlobalScope.launch(context = Dispatchers.IO) {
             modelsRepository.delAllRecords()
@@ -70,12 +102,15 @@ class ServiceViewModel(
     *
     */
     private val _queryCustomer = MutableLiveData<String>()
+
     fun setQueryCustomer(query: String) {
         _queryCustomer.postValue(query)
     }
+
     fun clearSearchCustomer() {
         _queryCustomer.postValue("")
     }
+
     val customer: LiveData<List<Customer>> =
         Transformations.switchMap(_queryCustomer) { query -> customerRepository.searchCustomer("%$query%") }
 
@@ -83,6 +118,7 @@ class ServiceViewModel(
     fun setCustomerId(id: Long) {
         _idCustomer.postValue(id)
     }
+
     val customerId: LiveData<Customer> =
         Transformations.switchMap(_idCustomer) { id -> customerRepository.getCustomerId(id) }
 

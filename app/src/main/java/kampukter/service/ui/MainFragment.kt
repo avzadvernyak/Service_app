@@ -25,7 +25,9 @@ class MainFragment : Fragment() {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             when (item?.itemId) {
                 R.id.action_1 -> repairAdapter?.let {
-                    //viewModel.deleteWaxes(it.getSelectedItems())
+                    repairAdapter?.selectedItemIds?.let {
+                        viewModel.setSelected(it.toList())
+                    }
                 }
                 R.id.action_2 -> {
                 }//viewModel.deleteAllWaxes()}
@@ -75,6 +77,18 @@ class MainFragment : Fragment() {
         viewModel.repairsView.observe(this, Observer { repairs ->
             repairAdapter?.setRepair(repairs)
         })
+        viewModel.repairToSend.observe(
+            this@MainFragment,
+            Observer { sendResultString ->
+                sendResultString.let {
+                    val sendIntent: Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, it)
+                        type = "text/plain"
+                    }
+                    startActivity(Intent.createChooser(sendIntent, "My Send"))
+                }
+            })
         addRepairButton.setOnClickListener {
             startActivity(Intent(activity, ServiceActivity::class.java))
         }
@@ -88,6 +102,7 @@ class MainFragment : Fragment() {
 
 
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         repairAdapter?.selectedItemIds?.let { selectedItemIds ->
             outState.putLongArray(KEY_SELECTED_ITEMS, selectedItemIds.toLongArray())

@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import kampukter.service.data.Customer
 import kampukter.service.data.Models
 import kampukter.service.data.Repair
-import kampukter.service.data.RepairsView
 import kampukter.service.data.dao.CustomerDao
 import kampukter.service.data.dao.ModelsDao
 import kampukter.service.data.dao.RepairDao

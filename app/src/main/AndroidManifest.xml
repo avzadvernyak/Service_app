@@ -54,5 +54,8 @@
                     android:value=".ui.CustomerActivity">
             </meta-data>
         </activity>
+        <activity android:name=".ui.RepairHistoryActivity"
+                  android:label="RepairHistoryActivity">
+        </activity>
     </application>
 </manifest>

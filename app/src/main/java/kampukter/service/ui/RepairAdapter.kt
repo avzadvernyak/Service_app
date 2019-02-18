@@ -1,10 +1,12 @@
 package kampukter.service.ui
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kampukter.service.R
@@ -39,6 +41,9 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
             if (isInSelection) {
                 toggleItemSelection(item)
             }
+/*else  actionModeCallback?.let { callback ->
+                (context as AppCompatActivity).startActivity(Intent(context, RepairHistoryActivity::class.java))
+            }*/
         }
 
         override fun onLongClick(item: RepairsView) {
