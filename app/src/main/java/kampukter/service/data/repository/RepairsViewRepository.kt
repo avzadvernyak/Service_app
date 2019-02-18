@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 class RepairsViewRepository(private val repairsViewDao: RepairsViewDao) {
 
     fun getAll(): LiveData<List<RepairsView>> = repairsViewDao.getAll()
-    fun getRepairSerNum(searchSerNumb: Long): LiveData<List<RepairsView>> =
+    fun getRepairSerNum(searchSerNumb: String): LiveData<List<RepairsView>> =
         repairsViewDao.getRepairsBySerialNumber(searchSerNumb)
 
     fun getSelectedItemsForSend(selected: List<Long>): LiveData<String> {

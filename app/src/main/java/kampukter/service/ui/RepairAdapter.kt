@@ -2,6 +2,7 @@ package kampukter.service.ui
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -40,10 +41,14 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
         override fun onClick(item: RepairsView) {
             if (isInSelection) {
                 toggleItemSelection(item)
+            } else actionModeCallback?.let { callback ->
+                (context as AppCompatActivity).startActivity(Intent(context, RepairHistoryActivity::class.java).apply {
+                    putExtra(
+                        EXTRA_MESSAGE,
+                        item.serialNumber
+                    )
+                })
             }
-/*else  actionModeCallback?.let { callback ->
-                (context as AppCompatActivity).startActivity(Intent(context, RepairHistoryActivity::class.java))
-            }*/
         }
 
         override fun onLongClick(item: RepairsView) {
@@ -110,5 +115,9 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
             items.filter { selectedItemIds.contains(it.id) }.map { items.indexOf(it) }
         selectedItemIds.clear()
         selectedItemPositions.forEach { notifyItemChanged(it) }
+    }
+
+    companion object {
+        const val EXTRA_MESSAGE = "EXTRA_MESSAGE"
     }
 }

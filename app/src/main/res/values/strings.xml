@@ -5,4 +5,10 @@
     <string name="save">Save</string>
     <!-- main fragment -->
     <string name="main_fragment_action_mode_title">Count: %1$d</string>
+    <string name="idRepair">№:</string>
+    <string name="beginDate">Принят:</string>
+    <string name="defect">дефект:</string>
+    <string name="endDate">выдан:</string>
+    <string name="notes">комментарий:</string>
+    <string name="customer">владелец:</string>
 </resources>

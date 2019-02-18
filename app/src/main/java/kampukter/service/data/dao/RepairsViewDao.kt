@@ -29,7 +29,7 @@ interface RepairsViewDao {
                 inner join customer on customer.id = repair.customer_Id
                 WHERE repair.serialNumber = :searchSerialNumber"""
     )
-    fun getRepairsBySerialNumber(searchSerialNumber: Long): LiveData<List<RepairsView>>
+    fun getRepairsBySerialNumber(searchSerialNumber: String): LiveData<List<RepairsView>>
 
     @Query(
         """SELECT repair.id AS id_Repair, repair.serialNumber AS serial_Number,

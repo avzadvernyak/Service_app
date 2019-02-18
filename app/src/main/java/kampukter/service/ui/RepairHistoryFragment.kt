@@ -9,15 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kampukter.service.R
 import kampukter.service.viewmodel.ServiceViewModel
-import kotlinx.android.synthetic.main.model_choice_fragment.*
+import kotlinx.android.synthetic.main.repair_history_fragment.*
 import org.koin.android.viewmodel.ext.viewModel
 
-class RepairHistoryFragment: Fragment() {
+
+class RepairHistoryFragment : Fragment() {
     private val viewModel by viewModel<ServiceViewModel>()
     private var repairHistoryAdapter: RepairHistoryAdapter? = null
-    private val selectedSerialNumber: Long = 0L
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,12 +24,19 @@ class RepairHistoryFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.repair_history_fragment, container, false)
+        return inflater.inflate(kampukter.service.R.layout.repair_history_fragment, container, false)
     }
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
 
-        viewModel.setQuerySerialNumber(selectedSerialNumber)
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as AppCompatActivity).setSupportActionBar(historyToolbar)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            title = "Title"
+            subtitle = "Subtitle"
+        }
+
+
         repairHistoryAdapter = RepairHistoryAdapter()
         with(recyclerView) {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -38,8 +44,13 @@ class RepairHistoryFragment: Fragment() {
         }
         viewModel.repairs.observe(this, Observer { list ->
             repairHistoryAdapter?.setList(list)
-        })
-        viewModel.clearSearchSerialNumber()
+            historyToolbar.title = "s/n:"+list.last().serialNumber
+            historyToolbar.subtitle= list.last().modelName
 
+        })
+        val selectedSerialNumber = arguments?.getString("selectedSerialNumber")
+        if (selectedSerialNumber != null) {
+            viewModel.setQuerySerialNumber(selectedSerialNumber)
+        }
     }
 }

@@ -41,13 +41,13 @@ class ServiceViewModel(
    */
     val repairsView = repairsViewRepository.getAll()
 
-    private val _querySeriaNumber = MutableLiveData<Long>()
-    fun setQuerySerialNumber(query: Long) {
+    private val _querySeriaNumber = MutableLiveData<String>()
+    fun setQuerySerialNumber(query: String) {
         _querySeriaNumber.postValue(query)
     }
 
     fun clearSearchSerialNumber() {
-        _querySeriaNumber.postValue(0L)
+        _querySeriaNumber.postValue("")
     }
 
     val repairs: LiveData<List<RepairsView>> =
