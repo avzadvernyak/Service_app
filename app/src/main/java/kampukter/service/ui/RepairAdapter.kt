@@ -3,6 +3,7 @@ package kampukter.service.ui
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -42,12 +43,31 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
             if (isInSelection) {
                 toggleItemSelection(item)
             } else actionModeCallback?.let { callback ->
-                (context as AppCompatActivity).startActivity(Intent(context, RepairHistoryActivity::class.java).apply {
-                    putExtra(
-                        EXTRA_MESSAGE,
-                        item.serialNumber
-                    )
-                })
+                if (item.issueDate == 0L) {
+                    Log.d("blablabla", "Edit repair"+item.issueDate.toString())
+                    (context as AppCompatActivity).startActivity(
+                        Intent(
+                            context,
+                            RepairEditActivity::class.java
+                        ).apply {
+                            putExtra(
+                                EXTRA_MESSAGE,
+                                item.id.toString()
+                            )
+                        })
+                } else {
+                    Log.d("blablabla", "View repairs-"+item.issueDate.toString())
+                    (context as AppCompatActivity).startActivity(
+                        Intent(
+                            context,
+                            RepairHistoryActivity::class.java
+                        ).apply {
+                            putExtra(
+                                EXTRA_MESSAGE,
+                                item.serialNumber
+                            )
+                        })
+                }
             }
         }
 

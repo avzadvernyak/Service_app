@@ -2,6 +2,7 @@ package kampukter.service.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import kampukter.service.data.RepairState
 import kampukter.service.data.RepairsView
 import kampukter.service.data.dao.RepairsViewDao
 import kotlinx.coroutines.Dispatchers
@@ -13,6 +14,8 @@ class RepairsViewRepository(private val repairsViewDao: RepairsViewDao) {
     fun getAll(): LiveData<List<RepairsView>> = repairsViewDao.getAll()
     fun getRepairSerNum(searchSerNumb: String): LiveData<List<RepairsView>> =
         repairsViewDao.getRepairsBySerialNumber(searchSerNumb)
+    fun getRepairsById(searchId: Long): LiveData<RepairsView> =
+        repairsViewDao.getRepairsById(searchId)
 
     fun getSelectedItemsForSend(selected: List<Long>): LiveData<String> {
         var resultString: String = ""

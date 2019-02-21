@@ -1,13 +1,11 @@
 package kampukter.service.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import kampukter.service.data.Customer
-import kampukter.service.data.Models
-import kampukter.service.data.Repair
-import kampukter.service.data.RepairsView
+import kampukter.service.data.*
 import kampukter.service.data.repository.CustomerRepository
 import kampukter.service.data.repository.ModelsRepository
 import kampukter.service.data.repository.RepairRepository
@@ -27,6 +25,15 @@ class ServiceViewModel(
     * Repair Entity
     *
     */
+    private val _setRepairSN = MutableLiveData<String>()
+
+    fun setQuerySNRepair(query: String) {
+        _setRepairSN.postValue(query)
+    }
+
+    val repairState: LiveData<RepairState> =
+        Transformations.switchMap(_setRepairSN) { query -> repairRepository.getStateRepair(query) }
+
     val repair = repairRepository.getAll()
 
     fun addRepair(repair: Repair) {
@@ -35,10 +42,25 @@ class ServiceViewModel(
         }
     }
 
+    fun delAllRepair() {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            repairRepository.delAllRecords()
+        }
+    }
+
     /*
    * RepairsView
    *
    */
+    private val _queryId = MutableLiveData<Long>()
+
+    fun setQueryId(query: Long) {
+        _queryId.postValue(query)
+    }
+
+    val repairsId: LiveData<RepairsView> =
+        Transformations.switchMap(_queryId) { query -> repairsViewRepository.getRepairsById(query) }
+
     val repairsView = repairsViewRepository.getAll()
 
     private val _querySeriaNumber = MutableLiveData<String>()
@@ -53,12 +75,20 @@ class ServiceViewModel(
     val repairs: LiveData<List<RepairsView>> =
         Transformations.switchMap(_querySeriaNumber) { query -> repairsViewRepository.getRepairSerNum(query) }
 
+
     private val _selected = MutableLiveData<List<Long>>()
     fun setSelected(selected: List<Long>) {
         _selected.postValue(selected)
     }
+
     val repairToSend: LiveData<String> =
         Transformations.switchMap(_selected) { query -> repairsViewRepository.getSelectedItemsForSend(query) }
+
+    fun endRepair(repair: Repair) {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            repairRepository.endRepair(repair)
+        }
+    }
 
     /*
     * Model Entity
@@ -96,6 +126,7 @@ class ServiceViewModel(
             modelsRepository.delAllRecords()
         }
     }
+
 
     /*
     * Customer Entity

@@ -30,7 +30,7 @@
         </activity>
         <activity android:name=".ui.BarCodeReadActivity"
                   android:label="BarCodeReadActivity"
-                  android:screenOrientation="sensorLandscape">
+                  >
         </activity>
         <activity android:name=".ui.ModelActivity"
                   android:label="ModelActivity">
@@ -56,6 +56,9 @@
         </activity>
         <activity android:name=".ui.RepairHistoryActivity"
                   android:label="RepairHistoryActivity">
+        </activity>
+        <activity android:name=".ui.RepairEditActivity"
+                  android:label="RepairEditActivity">
         </activity>
     </application>
 </manifest>

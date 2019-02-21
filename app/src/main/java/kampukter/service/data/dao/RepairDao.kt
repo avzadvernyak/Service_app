@@ -13,4 +13,11 @@ interface RepairDao : BasicDao<Repair> {
 
     @Query("delete from repair")
     suspend fun deleteAll()
+
+    @Query(
+        """SELECT *
+                FROM repair
+                WHERE repair.serialNumber = :serNumber  AND (repair.endDate = 0 OR repair.issueDate = 0) limit 1"""
+    )
+    suspend fun getRepairState(serNumber : String ): Repair?
 }

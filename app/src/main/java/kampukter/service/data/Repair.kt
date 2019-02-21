@@ -24,6 +24,7 @@ data class Repair(
     @ColumnInfo(name = "customer_Id")
     val customerId: Long,
     val beginDate: Long= 0L,
-    val endDate: Long= 0L,
+    val endDate: Long?= 0L,
+    val issueDate: Long?= 0L,
     val defect: String? = null,
     val notes: String?= null)

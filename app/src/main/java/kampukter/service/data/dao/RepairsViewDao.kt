@@ -11,7 +11,7 @@ interface RepairsViewDao {
         """SELECT repair.id AS id_Repair, repair.serialNumber AS serial_Number,
                 models.title AS model_Name, customer.title AS customer_Name,
                 repair.beginDate, repair.customer_Id AS customerId, repair.model_Id AS modelId, repair.endDate,
-                repair.defect, repair.notes
+                repair.issueDate, repair.defect, repair.notes
                 FROM models
                 inner join repair on repair.model_Id=models.id
                 inner join customer on customer.id = repair.customer_Id
@@ -23,11 +23,11 @@ interface RepairsViewDao {
         """SELECT repair.id AS id_Repair, repair.serialNumber AS serial_Number,
                 models.title AS model_Name, customer.title AS customer_Name,
                 repair.beginDate, repair.customer_Id AS customerId, repair.model_Id AS modelId, repair.endDate,
-                repair.defect, repair.notes
+                repair.issueDate, repair.defect, repair.notes
                 FROM models
                 inner join repair on repair.model_Id=models.id
                 inner join customer on customer.id = repair.customer_Id
-                WHERE repair.serialNumber = :searchSerialNumber"""
+                WHERE repair.serialNumber LIKE :searchSerialNumber """
     )
     fun getRepairsBySerialNumber(searchSerialNumber: String): LiveData<List<RepairsView>>
 
@@ -35,13 +35,24 @@ interface RepairsViewDao {
         """SELECT repair.id AS id_Repair, repair.serialNumber AS serial_Number,
                 models.title AS model_Name, customer.title AS customer_Name,
                 repair.beginDate, repair.customer_Id AS customerId, repair.model_Id AS modelId, repair.endDate,
-                repair.defect, repair.notes
+                repair.issueDate, repair.defect, repair.notes
                 FROM models
                 inner join repair on repair.model_Id=models.id
                 inner join customer on customer.id = repair.customer_Id
-                WHERE repair.id IN (:selected) """
+                WHERE repair.id = :searchId """
+    )
+    fun getRepairsById( searchId: Long ): LiveData<RepairsView>
+
+    @Query(
+        """SELECT repair.id AS id_Repair, repair.serialNumber AS serial_Number,
+                models.title AS model_Name, customer.title AS customer_Name,
+                repair.beginDate, repair.customer_Id AS customerId, repair.model_Id AS modelId, repair.endDate,
+                repair.issueDate, repair.defect, repair.notes
+                FROM models
+                inner join repair on repair.model_Id=models.id
+                inner join customer on customer.id = repair.customer_Id
+                WHERE repair.id IN (:selected)  """
     )
     suspend fun getSelectedItems(selected : List<Long>): List<RepairsView>
-
 
 }

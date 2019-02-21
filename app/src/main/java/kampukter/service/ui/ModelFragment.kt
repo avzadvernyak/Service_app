@@ -49,9 +49,6 @@ class ModelFragment : Fragment() {
         viewModel.clearSearch()
 
         addModelButton.setOnClickListener{startActivity(Intent(activity, AddNewModelActivity::class.java))}
-
-        //addModelButton.setOnClickListener { viewModel.addModel("D-Link DES-3028/A") }
-        //addModelButton.setOnClickListener { viewModel.delAll() } AddNewModelActivity
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -29,7 +29,7 @@ class MainFragment : Fragment() {
                         viewModel.setSelected(it.toList())
                     }
                 }
-                R.id.action_2 -> {
+                R.id.action_2 -> {viewModel.delAllRepair()
                 }//viewModel.deleteAllWaxes()}
             }
             mode?.finish()

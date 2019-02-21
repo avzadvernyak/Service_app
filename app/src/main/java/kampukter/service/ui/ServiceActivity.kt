@@ -2,11 +2,16 @@ package kampukter.service.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kampukter.service.R
 import kampukter.service.data.Repair
+import kampukter.service.data.RepairState
 import kampukter.service.ui.BarCodeReadActivity.Companion.EXTRA_CODE
 import kampukter.service.ui.CustomerFragment.Companion.EXTRA_OWNER_ID
 import kampukter.service.ui.ModelFragment.Companion.EXTRA_MODEL_ID
@@ -46,6 +51,7 @@ class ServiceActivity : AppCompatActivity() {
 
 
 
+
         viewModel.modelId.observe(this, Observer { it ->
             modelTextView.text = it.title
             modelIdAdd = it.id
@@ -54,25 +60,49 @@ class ServiceActivity : AppCompatActivity() {
             customerTextView.text = it.title
             customerIdAdd = it.id
         })
+        viewModel.repairs.observe(this, Observer { it ->
+            if (it.count() > 0 && serialTextView.text.toString() == it.last().serialNumber) {
+                viewModel.setModelId(it.first().modelId)
+                viewModel.setCustomerId(it.first().customerId)
+            }
+        })
+
+        viewModel.repairState.observe(this, Observer { repairState ->
+            when (repairState) {
+                is RepairState.Success -> {
+                    val result = Repair(
+                        serialNumber = serialTextView.text.toString(),
+                        modelId = modelIdAdd,
+                        customerId = customerIdAdd,
+                        beginDate = currentDate.time
+                    )
+                    Log.d("blablabla", "Add to base")
+                    viewModel.addRepair(result)
+                    finish()
+                }
+                is RepairState.Failure -> {
+                    Log.d("blablabla", repairState.reason)
+                }
+            }
+        })
+        serialTextView.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s.toString().length > 4) {
+                    viewModel.setQuerySerialNumber("%"+s.toString()+"%")
+                }
+            }
+        })
         addNewRepairButton.setOnClickListener {
             if (serialTextView.text.isNotEmpty() && modelIdAdd != 0L && customerIdAdd != 0L) {
-                val result = Repair(
-                    serialNumber = serialTextView.text.toString(),
-                    modelId = modelIdAdd,
-                    customerId = customerIdAdd,
-                    beginDate = currentDate.time
-                )
-                viewModel.addRepair(result)
-                finish()
+                viewModel.setQuerySNRepair(serialTextView.text.toString())
             } else Snackbar.make(
                 serviceActivityLayout,
                 "Not all data entered.",
                 Snackbar.LENGTH_LONG
             ).show()
-
         }
-
-
     }
 
     public override fun onActivityResult(

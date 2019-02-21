@@ -8,7 +8,20 @@
     <string name="idRepair">№:</string>
     <string name="beginDate">Принят:</string>
     <string name="defect">дефект:</string>
-    <string name="endDate">выдан:</string>
+    <string name="endDate">готов:</string>
     <string name="notes">комментарий:</string>
     <string name="customer">владелец:</string>
+    <!-- repair edit -->
+    <string name="repair_defect">Defect</string>
+    <string name="repairState">К выдаче</string>
+    <string name="repairNote">Note</string>
+    <string name="repairIssue">Выдать</string>
+    <string name="repairId">№ ремонта</string>
+    <string name="repairSN">s/n</string>
+    <string name="repairModel">Модель</string>
+    <string name="repairBegDate">Принят в ремонт</string>
+    <string name="repairCustomer">Владелец</string>
+    <string name="repairDefect">Неисправность</string>
+    <string name="repairInputText">Input text</string>
+    <string name="issueDate">Дата выдачи</string>
 </resources>
