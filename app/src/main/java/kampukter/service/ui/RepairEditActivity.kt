@@ -36,17 +36,19 @@ class RepairEditActivity : AppCompatActivity() {
                 stateTextView.text = if (endDate != null && endDate != 0L)
                     "Ready-" + DateFormat.format("dd/MM/yyyy", Date(endDate)).toString()
                 else "in work"
-                editRepairToolbar.title = it.serialNumber
-
-                saveRepairButton.setOnClickListener {
+                editRepairToolbar.title = serialNumber
+                saveRepairButton.setOnClickListener { view ->
                     viewModel.endRepair(
                         Repair(
                             id = id,
                             customerId = customerId,
                             modelId = modelId,
                             serialNumber = serialNumber,
+                            beginDate = beginDate,
                             notes = noteEditText.text.toString(),
-                            defect = defectEditText.text.toString()
+                            defect = defectEditText.text.toString(),
+                            endDate = endDate,
+                            issueDate = issueDate
                         )
                     )
                     finish()
@@ -60,9 +62,11 @@ class RepairEditActivity : AppCompatActivity() {
                                 customerId = customerId,
                                 modelId = modelId,
                                 serialNumber = serialNumber,
+                                beginDate = beginDate,
                                 notes = noteEditText.text.toString(),
                                 defect = defectEditText.text.toString(),
-                                endDate = 0L
+                                endDate = 0L,
+                                issueDate = issueDate
                             )
                         )
                     } else {
@@ -72,9 +76,11 @@ class RepairEditActivity : AppCompatActivity() {
                                 customerId = customerId,
                                 modelId = modelId,
                                 serialNumber = serialNumber,
+                                beginDate = beginDate,
                                 notes = noteEditText.text.toString(),
                                 defect = defectEditText.text.toString(),
-                                endDate = System.currentTimeMillis()
+                                endDate = System.currentTimeMillis(),
+                                issueDate = issueDate
                             )
                         )
                     }
@@ -82,7 +88,7 @@ class RepairEditActivity : AppCompatActivity() {
                 }
                 issueButton.setOnClickListener {
                     AlertDialog.Builder(this@RepairEditActivity).setTitle("Выдача устройства")
-                        .setMessage("Устройство ${modelName} \n s/n ${serialNumber} .\n Осуществить выдачу?")
+                        .setMessage("Устройство $modelName \n s/n $serialNumber .\n Осуществить выдачу?")
                         .setPositiveButton("Да") { _, _ ->
                             viewModel.endRepair(
                                 Repair(
@@ -90,6 +96,7 @@ class RepairEditActivity : AppCompatActivity() {
                                     customerId = customerId,
                                     modelId = modelId,
                                     serialNumber = serialNumber,
+                                    beginDate = beginDate,
                                     notes = noteEditText.text.toString(),
                                     defect = defectEditText.text.toString(),
                                     endDate = System.currentTimeMillis(),

@@ -47,9 +47,6 @@ class ServiceActivity : AppCompatActivity() {
         }
         var modelIdAdd: Long = 0L
         var customerIdAdd: Long = 0L
-        val currentDate = Date()
-
-
 
 
         viewModel.modelId.observe(this, Observer { it ->
@@ -74,7 +71,7 @@ class ServiceActivity : AppCompatActivity() {
                         serialNumber = serialTextView.text.toString(),
                         modelId = modelIdAdd,
                         customerId = customerIdAdd,
-                        beginDate = currentDate.time
+                        beginDate = System.currentTimeMillis()
                     )
                     Log.d("blablabla", "Add to base")
                     viewModel.addRepair(result)
@@ -82,6 +79,14 @@ class ServiceActivity : AppCompatActivity() {
                 }
                 is RepairState.Failure -> {
                     Log.d("blablabla", repairState.reason)
+                    customerTextView.text = ""
+                    modelTextView.text = ""
+                    serialTextView.setText("")
+                    Snackbar.make(
+                        serviceActivityLayout,
+                        "Data already exists.",
+                        Snackbar.LENGTH_LONG
+                    ).show()
                 }
             }
         })
