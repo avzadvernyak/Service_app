@@ -2,6 +2,9 @@
     <string name="app_name">Service</string>
     <string name="enter_model">Enter model</string>
     <string name="enter_customer">Enter device owner</string>
+
+    <string name="dateFormat">dd/MM/yyyy</string>
+
     <string name="save">Save</string>
     <!-- main fragment -->
     <string name="main_fragment_action_mode_title">Count: %1$d</string>
@@ -13,15 +16,17 @@
     <string name="customer">владелец:</string>
     <!-- repair edit -->
     <string name="repair_defect">Defect</string>
-    <string name="repairState">К выдаче</string>
+    <string name="repairStateReady">Ready</string>
+    <string name="repairStateInWork">In Work</string>
     <string name="repairNote">Note</string>
-    <string name="repairIssue">Выдать</string>
-    <string name="repairId">№ ремонта</string>
+    <string name="repairIssue">Give</string>
+    <string name="repairId">#Order</string>
     <string name="repairSN">s/n</string>
-    <string name="repairModel">Модель</string>
-    <string name="repairBegDate">Принят в ремонт</string>
-    <string name="repairCustomer">Владелец</string>
+    <string name="repairBegDate">Принят в ремонт:</string>
+    <string name="repairCustomer">Владелец:</string>
     <string name="repairDefect">Неисправность</string>
     <string name="repairInputText">Input text</string>
     <string name="issueDate">Дата выдачи</string>
+    <string name="returnBack">Return back to client?</string>
+    <string name="deviceWithSN">Device and serial number \n</string>
 </resources>

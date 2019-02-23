@@ -20,7 +20,7 @@ class RepairViewHolder(
             serialNumTextView.text = item.serialNumber.toString()
             modelNameTextView.text = item.modelName
             customerNameTextView.text = item.customerName
-            begitDateTextView.text = DateFormat.format("dd/MM/yyyy", Date(item.beginDate)).toString()
+            begitDateTextView.text = DateFormat.format("dd/MM/yyyy", item.beginDate).toString()
 
             setOnClickListener {
                 clickEventDelegate.onClick(item)

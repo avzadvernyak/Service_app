@@ -1,6 +1,7 @@
 package kampukter.service.data
 
 import androidx.room.ColumnInfo
+import java.util.*
 
 data class RepairsView(
     @ColumnInfo(name = "id_Repair")
@@ -13,8 +14,8 @@ data class RepairsView(
     val customerId: Long,
     @ColumnInfo(name = "customer_Name")
     val customerName: String,
-    val beginDate: Long = 0L,
-    val endDate: Long? = 0L,
-    val issueDate: Long?= 0L,
+    val beginDate: Date,
+    val endDate: Date?= null,
+    val issueDate: Date?= null,
     val defect: String? = null,
     val notes: String? = null)

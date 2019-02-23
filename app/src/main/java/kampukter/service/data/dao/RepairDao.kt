@@ -17,7 +17,7 @@ interface RepairDao : BasicDao<Repair> {
     @Query(
         """SELECT *
                 FROM repair
-                WHERE repair.serialNumber = :serNumber  AND (repair.endDate = 0 OR repair.issueDate = 0) limit 1"""
+                WHERE repair.serialNumber = :serNumber  AND repair.issueDate is null limit 1"""
     )
     suspend fun getRepairState(serNumber : String ): Repair?
 }

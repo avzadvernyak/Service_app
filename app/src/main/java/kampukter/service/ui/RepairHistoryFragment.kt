@@ -34,8 +34,9 @@ class RepairHistoryFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.apply {
             title = "Title"
             subtitle = "Subtitle"
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
         }
-
 
         repairHistoryAdapter = RepairHistoryAdapter()
         with(recyclerView) {

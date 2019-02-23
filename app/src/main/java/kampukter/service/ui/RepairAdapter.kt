@@ -42,8 +42,8 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
         override fun onClick(item: RepairsView) {
             if (isInSelection) {
                 toggleItemSelection(item)
-            } else actionModeCallback?.let { callback ->
-                if (item.issueDate == 0L) {
+            } else actionModeCallback?.let { _ ->
+                if (item.issueDate == null) {
                     Log.d("blablabla", "Edit repair"+item.issueDate.toString())
                     (context as AppCompatActivity).startActivity(
                         Intent(
@@ -55,6 +55,7 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
                                 item.id.toString()
                             )
                         })
+                    Log.d("blablabla", "Edit repair"+item.issueDate.toString())
                 } else {
                     Log.d("blablabla", "View repairs-"+item.issueDate.toString())
                     (context as AppCompatActivity).startActivity(

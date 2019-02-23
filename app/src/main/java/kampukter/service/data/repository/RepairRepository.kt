@@ -1,6 +1,5 @@
 package kampukter.service.data.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kampukter.service.data.Repair
@@ -24,9 +23,9 @@ class RepairRepository(private val repairDao: RepairDao) {
         var result = MutableLiveData<RepairState>()
         GlobalScope.launch(context = Dispatchers.IO) {
             result.postValue(
-                when (repairDao.getRepairState(serialNumber)?.issueDate) {
+                when (repairDao.getRepairState(serialNumber)) {
                     null ->  RepairState.Success
-                    0L -> RepairState.Failure("In Work")
+                    //0L -> RepairState.Failure("In Work")
                     else -> RepairState.Failure("Close")
                 }
             )

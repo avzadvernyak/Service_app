@@ -71,7 +71,7 @@ class ServiceActivity : AppCompatActivity() {
                         serialNumber = serialTextView.text.toString(),
                         modelId = modelIdAdd,
                         customerId = customerIdAdd,
-                        beginDate = System.currentTimeMillis()
+                        beginDate = Date()
                     )
                     Log.d("blablabla", "Add to base")
                     viewModel.addRepair(result)

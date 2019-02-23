@@ -21,23 +21,35 @@ class RepairEditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.repair_edit)
+
+        setSupportActionBar(editRepairToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+
         val idSelectedRepair = intent.getStringExtra(RepairAdapter.EXTRA_MESSAGE)
 
         viewModel.setQueryId(idSelectedRepair.toLong())
         viewModel.repairsId.observe(this, Observer {
             with(it) {
                 idTextView.text = id.toString()
-                modelTextView.text = modelName
                 customerTextView.text = customerName
-                serialNumberTextView.text = serialNumber
                 noteEditText.setText(notes)
                 defectEditText.setText(defect)
-                begDateTextView.text = DateFormat.format(" dd/MM/yyyy", Date(beginDate)).toString()
-                stateTextView.text = if (endDate != null && endDate != 0L)
-                    "Ready-" + DateFormat.format("dd/MM/yyyy", Date(endDate)).toString()
-                else "in work"
+                begDateTextView.text = DateFormat.format(getString(R.string.dateFormat), beginDate).toString()
+                if (endDate != null) {
+                    stateTextView.text =
+                        getString(R.string.repairStateReady) + DateFormat.format(
+                            getString(R.string.dateFormat),
+                            endDate
+                        ).toString()
+                    repairStateButton.text = getString(R.string.repairStateInWork)
+                } else {
+                    stateTextView.text = getString(R.string.repairStateInWork)
+                    repairStateButton.text = getString(R.string.repairStateReady)
+                }
                 editRepairToolbar.title = serialNumber
-                saveRepairButton.setOnClickListener { view ->
+                editRepairToolbar.subtitle = modelName
+                saveEditRepair.setOnClickListener {
                     viewModel.endRepair(
                         Repair(
                             id = id,
@@ -54,9 +66,8 @@ class RepairEditActivity : AppCompatActivity() {
                     finish()
                 }
                 repairStateButton.setOnClickListener {
-
-                    if (endDate != null && endDate != 0L) {
-                        viewModel.endRepair(
+                    viewModel.endRepair(
+                        if (endDate != null) {
                             Repair(
                                 id = id,
                                 customerId = customerId,
@@ -65,12 +76,10 @@ class RepairEditActivity : AppCompatActivity() {
                                 beginDate = beginDate,
                                 notes = noteEditText.text.toString(),
                                 defect = defectEditText.text.toString(),
-                                endDate = 0L,
+                                endDate = null,
                                 issueDate = issueDate
                             )
-                        )
-                    } else {
-                        viewModel.endRepair(
+                        } else {
                             Repair(
                                 id = id,
                                 customerId = customerId,
@@ -79,17 +88,17 @@ class RepairEditActivity : AppCompatActivity() {
                                 beginDate = beginDate,
                                 notes = noteEditText.text.toString(),
                                 defect = defectEditText.text.toString(),
-                                endDate = System.currentTimeMillis(),
+                                endDate = Date(),
                                 issueDate = issueDate
                             )
-                        )
-                    }
+                        }
+                    )
                     Log.d("blablabla", "switch date->" + endDate.toString())
                 }
                 issueButton.setOnClickListener {
-                    AlertDialog.Builder(this@RepairEditActivity).setTitle("Выдача устройства")
-                        .setMessage("Устройство $modelName \n s/n $serialNumber .\n Осуществить выдачу?")
-                        .setPositiveButton("Да") { _, _ ->
+                    AlertDialog.Builder(this@RepairEditActivity).setTitle(getString(R.string.returnBack))
+                        .setMessage(getString(R.string.deviceWithSN)+"\n $modelName - $serialNumber")
+                        .setPositiveButton("Yes") { _, _ ->
                             viewModel.endRepair(
                                 Repair(
                                     id = id,
@@ -99,13 +108,13 @@ class RepairEditActivity : AppCompatActivity() {
                                     beginDate = beginDate,
                                     notes = noteEditText.text.toString(),
                                     defect = defectEditText.text.toString(),
-                                    endDate = System.currentTimeMillis(),
-                                    issueDate = System.currentTimeMillis()
+                                    endDate = Date(),
+                                    issueDate = Date()
                                 )
                             )
                             finish()
                         }
-                        .setNegativeButton("Нет") { _, _ -> finish() }
+                        .setNegativeButton("No") { _, _ -> }
                         .create().show()
 
                 }

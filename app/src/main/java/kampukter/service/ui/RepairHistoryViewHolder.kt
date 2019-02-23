@@ -12,15 +12,15 @@ class RepairHistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView
 
         with(itemView) {
             idTextView.text = result.id.toString()
-            beginDateTextView.text = DateFormat.format("dd/MM/yyyy", Date(result.beginDate)).toString()
-            if (result.endDate != 0L && result.endDate != null) endDateTextView.text =
-                DateFormat.format("dd/MM/yyyy", Date(result.endDate)).toString()
+            beginDateTextView.text = DateFormat.format("dd/MM/yyyy", result.beginDate).toString()
+            if (result.endDate != null) endDateTextView.text =
+                DateFormat.format("dd/MM/yyyy", result.endDate).toString()
             else endDateTextView.text = "in work"
             defectTextView.text = result.defect
             customerTextView.text = result.customerName
             notesTextView.text = result.notes
-            if (result.issueDate != 0L && result.issueDate != null) issueTextView.text =
-                DateFormat.format("dd/MM/yyyy", Date(result.issueDate)).toString()
+            if (result.issueDate != null) issueTextView.text =
+                DateFormat.format("dd/MM/yyyy", result.issueDate).toString()
             else issueTextView.text = "in work"
 
             setOnClickListener { repairClickListener?.invoke(result) }
