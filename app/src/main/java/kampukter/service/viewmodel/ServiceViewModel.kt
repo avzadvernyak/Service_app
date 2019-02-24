@@ -61,7 +61,18 @@ class ServiceViewModel(
     val repairsId: LiveData<RepairsView> =
         Transformations.switchMap(_queryId) { query -> repairsViewRepository.getRepairsById(query) }
 
-    val repairsView = repairsViewRepository.getAll()
+    private val _querySNandCustomer = MutableLiveData<String>()
+    fun setQuerySNandCustomer(query: String) {
+        _querySNandCustomer.postValue(query)
+    }
+
+    fun clearSearchSNCustomer() {
+        _querySNandCustomer.postValue("")
+    }
+
+    val repairsView: LiveData<List<RepairsView>> =
+        Transformations.switchMap(_querySNandCustomer) { query -> repairsViewRepository.getRepairsBySNandCustomer("%$query%") }
+
 
     private val _querySeriaNumber = MutableLiveData<String>()
     fun setQuerySerialNumber(query: String) {

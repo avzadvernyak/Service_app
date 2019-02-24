@@ -3,7 +3,9 @@ package kampukter.service.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import kampukter.service.R
@@ -12,6 +14,7 @@ import kotlinx.android.synthetic.main.main_fragment.*
 import org.koin.android.viewmodel.ext.viewModel
 
 private const val KEY_SELECTED_ITEMS = "KEY_SELECTED_ITEMS"
+private const val SEARCH_STRING = "SEARCH_STRING"
 
 class MainFragment : Fragment() {
 
@@ -21,6 +24,8 @@ class MainFragment : Fragment() {
 
     private var actionMode: ActionMode? = null
 
+    private var queryString: String? = null
+
     private val actionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             when (item?.itemId) {
@@ -29,7 +34,8 @@ class MainFragment : Fragment() {
                         viewModel.setSelected(it.toList())
                     }
                 }
-                R.id.action_2 -> {viewModel.delAllRepair()
+                R.id.action_2 -> {
+                    viewModel.delAllRepair()
                 }//viewModel.deleteAllWaxes()}
             }
             mode?.finish()
@@ -57,10 +63,13 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as? AppCompatActivity)?.setSupportActionBar(mainFragmentToolbar)
+
         repairAdapter = RepairAdapter(view.context).apply {
             enableActionMode(actionModeCallback) { count ->
                 actionMode?.title = getString(R.string.main_fragment_action_mode_title, count)
@@ -89,23 +98,42 @@ class MainFragment : Fragment() {
                     startActivity(Intent.createChooser(sendIntent, "My Send"))
                 }
             })
+        viewModel.clearSearchSNCustomer()
         addRepairButton.setOnClickListener {
             startActivity(Intent(activity, ServiceActivity::class.java))
         }
 
         savedInstanceState?.let { bundle ->
             bundle.getLongArray(KEY_SELECTED_ITEMS)?.let { selectedItemIds ->
-                //repairAdapter?.selectedItemIds = selectedItemIds.toMutableSet()
                 repairAdapter?.setSelection(selectedItemIds)
             }
+            bundle.getString(SEARCH_STRING)?.let { searchString -> queryString = searchString }
         }
-
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(SEARCH_STRING, queryString)
         repairAdapter?.selectedItemIds?.let { selectedItemIds ->
             outState.putLongArray(KEY_SELECTED_ITEMS, selectedItemIds.toLongArray())
         }
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_search_toolbar_menu, menu)
+        (menu.findItem(R.id.action_search)?.actionView as? SearchView)?.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    if (newText.isNullOrBlank()) viewModel.clearSearchSNCustomer() else {
+                        viewModel.setQuerySNandCustomer(newText)
+                        queryString = newText
+                    }
+                    return true
+                }
+            })
     }
 }

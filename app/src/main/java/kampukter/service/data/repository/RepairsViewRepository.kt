@@ -16,6 +16,8 @@ class RepairsViewRepository(private val repairsViewDao: RepairsViewDao) {
         repairsViewDao.getRepairsBySerialNumber(searchSerNumb)
     fun getRepairsById(searchId: Long): LiveData<RepairsView> =
         repairsViewDao.getRepairsById(searchId)
+    fun getRepairsBySNandCustomer(searchSNandCustomer:String):LiveData<List<RepairsView>> =
+        repairsViewDao.getRepairsBySNandCustomer(searchSNandCustomer)
 
     fun getSelectedItemsForSend(selected: List<Long>): LiveData<String> {
         var resultString: String = ""
@@ -23,7 +25,7 @@ class RepairsViewRepository(private val repairsViewDao: RepairsViewDao) {
 
         GlobalScope.launch(context = Dispatchers.IO) {
             repairsViewDao.getSelectedItems(selected).forEach {
-                resultString = resultString + it.serialNumber + "," + it.modelName + "," + it.customerName + "\n"
+                resultString = resultString + it.serialNumber + "," + it.modelName + "," + it.customerName +it.notes+ "\n"
             }
             result.postValue(resultString)
         }

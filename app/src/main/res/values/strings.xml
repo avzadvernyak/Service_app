@@ -15,7 +15,7 @@
     <string name="notes">комментарий:</string>
     <string name="customer">владелец:</string>
     <!-- repair edit -->
-    <string name="repair_defect">Defect</string>
+    <string name="repairDefect">Defect</string>
     <string name="repairStateReady">Ready</string>
     <string name="repairStateInWork">In Work</string>
     <string name="repairNote">Note</string>
@@ -24,9 +24,9 @@
     <string name="repairSN">s/n</string>
     <string name="repairBegDate">Принят в ремонт:</string>
     <string name="repairCustomer">Владелец:</string>
-    <string name="repairDefect">Неисправность</string>
     <string name="repairInputText">Input text</string>
     <string name="issueDate">Дата выдачи</string>
     <string name="returnBack">Return back to client?</string>
-    <string name="deviceWithSN">Device and serial number \n</string>
+    <string name="deviceWithSN">Device and serial number \n %1$s\ns/n %2$s</string>
+    <string name="repairState">Состояние</string>
 </resources>

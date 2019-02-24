@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import kampukter.service.data.Customer
 import kampukter.service.data.Models
 import kampukter.service.data.repository.*
 import kampukter.service.viewmodel.ServiceViewModel
@@ -32,8 +33,35 @@ class ServiceApplication : Application() {
                         GlobalScope.launch(context = Dispatchers.IO) {
                             get<ServiceDatabase>().modelsDao().insertAll(
                                 listOf(
+                                    Models(title = "D-Link DES-3200-10/A1"),
+                                    Models(title = "D-Link DES-3200-10/C1"),
+                                    Models(title = "D-Link DES-3200-18/A1"),
+                                    Models(title = "D-Link DES-3200-18/C1"),
                                     Models(title = "D-Link DES-3200-26/A1"),
-                                    Models(title = "D-Link DES-3200-26/B1")
+                                    Models(title = "D-Link DES-3200-26/B1"),
+                                    Models(title = "D-Link DES-3200-26/С1"),
+                                    Models(title = "D-Link DES-3200-28/A1"),
+                                    Models(title = "D-Link DES-3200-28/C1"),
+                                    Models(title = "D-Link DES-3200-52/A1"),
+                                    Models(title = "D-Link DES-3200-52/C1"),
+                                    Models(title = "D-Link DES-3028/A"),
+                                    Models(title = "D-Link DES-3028/B"),
+                                    Models(title = "D-Link DES-3052/A"),
+                                    Models(title = "D-Link DES-3200-28F/A1"),
+                                    Models(title = "D-Link DES-3200-28F/C1"),
+                                    Models(title = "D-Link DES-1210-26/ME/B1"),
+                                    Models(title = "D-Link DES-1210-28/A")
+                                )
+                            )
+                        }
+                        GlobalScope.launch(context = Dispatchers.IO) {
+                            get<ServiceDatabase>().customerDao().insertAll(
+                                listOf(
+                                    Customer(title = "Матрица (ДЭК)"),
+                                    Customer(title = "ТРК Горизонт"),
+                                    Customer(title = "ТРК Планета"),
+                                    Customer(title = "ISP Енакиево"),
+                                    Customer(title = "СТК Старобешево")
                                 )
                             )
                         }
