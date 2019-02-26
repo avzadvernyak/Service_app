@@ -1,10 +1,10 @@
 package kampukter.service.ui
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -15,12 +15,11 @@ import kotlinx.android.synthetic.main.repair_edit.*
 import org.koin.android.viewmodel.ext.viewModel
 import java.util.*
 
-
-
 class RepairEditActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<ServiceViewModel>()
 
+    @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +34,7 @@ class RepairEditActivity : AppCompatActivity() {
 
         viewModel.setQueryId(idSelectedRepair.toLong())
         viewModel.repairsId.observe(this, Observer {
+            if (it.issueDate != null) finish()
             with(it) {
                 val repairEdit = Repair(
                     id = id,
@@ -97,28 +97,20 @@ class RepairEditActivity : AppCompatActivity() {
                     Log.d("blablabla", "switch date->" + endDate.toString())
                 }
                 issueButton.setOnClickListener {
-                   /*
-                    if (savedInstanceState == null) supportFragmentManager.beginTransaction().add(
-                        android.R.id.content,
-                        RepairAlertDialogFragment()
-                    ).commit()
-*/
-                    AlertDialog.Builder(this@RepairEditActivity).setTitle(getString(R.string.returnBack))
-                        .setMessage(getString(R.string.deviceWithSN,modelName,serialNumber))
-                        .setPositiveButton("Yes") { _, _ ->
-                            viewModel.endRepair(
-                                repairEdit.copy(
-                                    notes = noteTextInputEdit.text.toString(),
-                                    defect = defectTextInputEdit.text.toString(),
-                                    endDate = Date(),
-                                    issueDate = Date()
-                                )
-                            )
-                            finish()
-                        }
-                        .setNegativeButton("No") { _, _ -> }
-                        .create().show()
-
+                    viewModel.putRepairForSave(
+                        repairEdit.copy(
+                            notes = noteTextInputEdit.text.toString(),
+                            defect = defectTextInputEdit.text.toString(),
+                            endDate = Date(),
+                            issueDate = Date()
+                        )
+                    )
+                    fragmentManager?.let { fm ->
+                        RepairAlertDialogFragment.create(
+                            getString(R.string.deviceWithSN, modelName, serialNumber)
+                        )
+                            .show(supportFragmentManager, RepairAlertDialogFragment.TAG)
+                    }
                 }
 
             }

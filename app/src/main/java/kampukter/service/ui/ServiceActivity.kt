@@ -29,6 +29,9 @@ class ServiceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.service_activity)
+        setSupportActionBar(newRepairToolbar).apply { title=getString(R.string.addNewRepair) }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
 
         scanCodebutton.setOnClickListener {
             startActivityForResult(Intent(this, BarCodeReadActivity::class.java), SCAN_CODE_REQUEST)
@@ -99,12 +102,11 @@ class ServiceActivity : AppCompatActivity() {
                 }
             }
         })
-        addNewRepairButton.setOnClickListener {
+        saveNewRepairButton.setOnClickListener {
             if (serialTextView.text.isNotEmpty() && modelIdAdd != 0L && customerIdAdd != 0L) {
                 viewModel.setQuerySNRepair(serialTextView.text.toString())
             } else Snackbar.make(
-                serviceActivityLayout,
-                "Not all data entered.",
+                serviceActivityLayout,getString(R.string.addNewRepairError),
                 Snackbar.LENGTH_LONG
             ).show()
         }

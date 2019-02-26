@@ -30,6 +30,11 @@ class CustomerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            title = getString(R.string.enterCustomer)
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
 
         customerAdapter = CustomerAdapter { item ->
             activity?.run {
@@ -45,7 +50,7 @@ class CustomerFragment : Fragment() {
             customerAdapter?.setList(list)
         })
         viewModel.clearSearchCustomer()
-        addCustomerButton.setOnClickListener{startActivity(Intent(activity, AddNewCustomerActivity::class.java))}
+        addCustomerButton.setOnClickListener { startActivity(Intent(activity, AddNewCustomerActivity::class.java)) }
         //addCustomerButton.setOnClickListener { viewModel.addCustomer("Матрица ДЭК") }
         //addCustomerButton.setOnClickListener { viewModel.delAll() } AddNewModelActivity
     }

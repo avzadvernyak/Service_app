@@ -51,7 +51,8 @@ interface RepairsViewDao {
                 FROM models
                 inner join repair on repair.model_Id=models.id
                 inner join customer on customer.id = repair.customer_Id
-                WHERE repair.serialNumber LIKE :search OR  customer.title LIKE :search"""
+                WHERE repair.serialNumber LIKE :search OR  customer.title LIKE :search
+                ORDER BY repair.id DESC"""
     )
     fun getRepairsBySNandCustomer(search: String): LiveData<List<RepairsView>>
 

@@ -48,6 +48,24 @@ class ServiceViewModel(
         }
     }
 
+    lateinit var repairForSave: Repair
+    fun putRepairForSave(repair: Repair) {
+        repairForSave = repair
+    }
+    fun endRepairIssue() {
+        repairForSave.let {
+            GlobalScope.launch(context = Dispatchers.IO) {
+                repairRepository.endRepair(it)
+            }
+        }
+    }
+
+    fun endRepair(repair: Repair) {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            repairRepository.endRepair(repair)
+        }
+    }
+
     /*
    * RepairsView
    *
@@ -64,6 +82,10 @@ class ServiceViewModel(
     private val _querySNandCustomer = MutableLiveData<String>()
     fun setQuerySNandCustomer(query: String) {
         _querySNandCustomer.postValue(query)
+    }
+
+    fun getQuerySNandCustomer(): String? {
+        return _querySNandCustomer.value
     }
 
     fun clearSearchSNCustomer() {
@@ -95,11 +117,6 @@ class ServiceViewModel(
     val repairToSend: LiveData<String> =
         Transformations.switchMap(_selected) { query -> repairsViewRepository.getSelectedItemsForSend(query) }
 
-    fun endRepair(repair: Repair) {
-        GlobalScope.launch(context = Dispatchers.IO) {
-            repairRepository.endRepair(repair)
-        }
-    }
 
     /*
     * Model Entity

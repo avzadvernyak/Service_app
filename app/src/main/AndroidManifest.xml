@@ -33,7 +33,8 @@
         >
         </activity>
         <activity android:name=".ui.ModelActivity"
-                  android:label="ModelActivity">
+                  android:label="ModelActivity"
+                  android:parentActivityName=".ui.ServiceActivity">
         </activity>
         <activity android:name=".ui.AddNewModelActivity"
                   android:parentActivityName=".ui.ModelActivity"
@@ -44,7 +45,8 @@
             </meta-data>
         </activity>
         <activity android:name=".ui.CustomerActivity"
-                  android:label="CustomerActivity">
+                  android:label="CustomerActivity"
+                  android:parentActivityName=".ui.ServiceActivity">
         </activity>
         <activity android:name=".ui.AddNewCustomerActivity"
                   android:parentActivityName=".ui.CustomerActivity"

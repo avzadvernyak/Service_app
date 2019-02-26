@@ -2,6 +2,7 @@ package kampukter.service.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
@@ -12,6 +13,7 @@ import kampukter.service.R
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
 import org.koin.android.viewmodel.ext.viewModel
+
 
 private const val KEY_SELECTED_ITEMS = "KEY_SELECTED_ITEMS"
 private const val SEARCH_STRING = "SEARCH_STRING"
@@ -24,8 +26,6 @@ class MainFragment : Fragment() {
 
     private var actionMode: ActionMode? = null
 
-    private var queryString: String? = null
-
     private val actionModeCallback: ActionMode.Callback = object : ActionMode.Callback {
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
             when (item?.itemId) {
@@ -34,9 +34,11 @@ class MainFragment : Fragment() {
                         viewModel.setSelected(it.toList())
                     }
                 }
-                R.id.action_2 -> {
-                    viewModel.delAllRepair()
-                }//viewModel.deleteAllWaxes()}
+                R.id.action_2 -> repairAdapter?.let {
+                    repairAdapter?.selectedItemIds?.let {
+                        viewModel.setSelected(it.toList())
+                    }
+                }
             }
             mode?.finish()
             return true
@@ -45,6 +47,7 @@ class MainFragment : Fragment() {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             actionMode = mode
             mode?.menuInflater?.inflate(R.menu.main_fragment_menu, menu)
+            mainFragmentToolbar.visibility = View.GONE
             return true
         }
 
@@ -55,6 +58,7 @@ class MainFragment : Fragment() {
         override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             repairAdapter?.endSelection()
+            mainFragmentToolbar.visibility = View.VISIBLE
         }
     }
 
@@ -84,6 +88,7 @@ class MainFragment : Fragment() {
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         }
         viewModel.repairsView.observe(this, Observer { repairs ->
+            Log.d("blablabla", "update repairsView")
             repairAdapter?.setRepair(repairs)
         })
         viewModel.repairToSend.observe(
@@ -98,7 +103,9 @@ class MainFragment : Fragment() {
                     startActivity(Intent.createChooser(sendIntent, "My Send"))
                 }
             })
-        viewModel.clearSearchSNCustomer()
+
+        if (viewModel.getQuerySNandCustomer().isNullOrEmpty()) viewModel.clearSearchSNCustomer()
+
         addRepairButton.setOnClickListener {
             startActivity(Intent(activity, ServiceActivity::class.java))
         }
@@ -107,31 +114,34 @@ class MainFragment : Fragment() {
             bundle.getLongArray(KEY_SELECTED_ITEMS)?.let { selectedItemIds ->
                 repairAdapter?.setSelection(selectedItemIds)
             }
-            bundle.getString(SEARCH_STRING)?.let { searchString -> queryString = searchString }
         }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(SEARCH_STRING, queryString)
         repairAdapter?.selectedItemIds?.let { selectedItemIds ->
             outState.putLongArray(KEY_SELECTED_ITEMS, selectedItemIds.toLongArray())
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main_search_toolbar_menu, menu)
-        (menu.findItem(R.id.action_search)?.actionView as? SearchView)?.setOnQueryTextListener(
+
+        val mySQMenu = (menu.findItem(R.id.action_search)?.actionView as? SearchView)
+        val searchString: CharSequence? = viewModel.getQuerySNandCustomer()
+
+        if (!searchString.isNullOrEmpty()) {
+            menu.findItem(R.id.action_search).expandActionView()
+            mySQMenu?.setQuery(searchString, false)
+        }
+        mySQMenu?.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText.isNullOrBlank()) viewModel.clearSearchSNCustomer() else {
-                        viewModel.setQuerySNandCustomer(newText)
-                        queryString = newText
-                    }
+                    if (newText.isNullOrBlank()) viewModel.clearSearchSNCustomer()
+                    else viewModel.setQuerySNandCustomer(newText)
                     return true
                 }
             })

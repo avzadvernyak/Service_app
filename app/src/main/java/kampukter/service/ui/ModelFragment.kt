@@ -31,6 +31,11 @@ class ModelFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            title = getString(R.string.enterModel)
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
 
         modelAdapter = ModelAdapter { item ->
             activity?.run {

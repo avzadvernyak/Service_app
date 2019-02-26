@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/editRepairLayout"
 >
 
@@ -96,7 +96,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
             tools:ignore="MissingConstraints"
-            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/noteTextInputLayout"/>
+            android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/noteTextInputLayout"
+            android:layout_marginBottom="64dp" app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
             android:id="@+id/issueButton"
             android:text="@string/repairIssue"
@@ -113,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/repairDefect" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/stateTextView" >
+            app:layout_constraintTop_toBottomOf="@+id/stateTextView">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/defectTextInputEdit"
@@ -129,7 +130,7 @@
             android:hint="@string/repairNote"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/defectTextInputLayout"
-            >
+    >
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/noteTextInputEdit"
@@ -142,7 +143,8 @@
             android:id="@+id/saveEditRepair"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_save"
+            app:backgroundTint="@color/colorOk"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="16dp"/>

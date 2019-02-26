@@ -5,6 +5,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/serviceActivityLayout">
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/newRepairToolbar"
+            android:layout_width="match_parent"
+            android:background="?attr/colorPrimary"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent">
+    </androidx.appcompat.widget.Toolbar>
     <EditText
             android:id="@+id/serialTextView"
             android:hint="Enter or scan S/N"
@@ -73,10 +80,11 @@
             app:layout_constraintStart_toEndOf="@+id/customerTextView"
             android:layout_marginStart="8dp"/>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/addNewRepairButton"
+            android:id="@+id/saveNewRepairButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_save"
+            app:backgroundTint="@color/colorOk"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_margin="16dp"/>

@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name">Service</string>
-    <string name="enter_model">Enter model</string>
-    <string name="enter_customer">Enter device owner</string>
-
     <string name="dateFormat">dd/MM/yyyy</string>
-
     <string name="save">Save</string>
     <!-- main fragment -->
     <string name="main_fragment_action_mode_title">Count: %1$d</string>
@@ -15,6 +11,7 @@
     <string name="notes">комментарий:</string>
     <string name="customer">владелец:</string>
     <!-- repair edit -->
+    <string name="addNewRepair">Create new repair</string>
     <string name="repairDefect">Defect</string>
     <string name="repairStateReady">Ready</string>
     <string name="repairStateInWork">In Work</string>
@@ -29,4 +26,22 @@
     <string name="returnBack">Return back to client?</string>
     <string name="deviceWithSN">Device and serial number \n %1$s\ns/n %2$s</string>
     <string name="repairState">Состояние</string>
+    <string name="addNewRepairError">"Not all data entered.</string>
+    <!-- add model -->
+    <string name="enter_model">Enter model</string>
+    <string name="addNewModel">Add new model</string>
+    <string name="queAddNewModel">Add %1$s in base?</string>
+    <string name="addNewModelYes">Yes</string>
+    <string name="addNewModelNo">No</string>
+    <string name="addNewModelError">Shouldn\'t be empty and more than 5 characters.</string>
+    <string name="enterModel">Select model</string>
+    <!-- add customer -->
+    <string name="enter_customer">Enter device owner</string>
+    <string name="addNewCustomer">Add new customer</string>
+    <string name="queAddNewCustomer">Add %1$s in base?</string>
+    <string name="addNewCustomerYes">Yes</string>
+    <string name="addNewCustomerNo">No</string>
+    <string name="addNewCustomerError">Shouldn\'t be empty and more than 3 characters.</string>
+    <string name="enterCustomer">Select device owner</string>
+
 </resources>

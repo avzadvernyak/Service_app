@@ -16,22 +16,21 @@ class AddNewCustomerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_new_customer)
-        setSupportActionBar(newCustomerToolbar)
+        setSupportActionBar(newCustomerToolbar).apply { title=getString(R.string.addNewCustomer) }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         saveNewCustomerButton.setOnClickListener {
             if (!newCustomerEditText.text.isEmpty() && newCustomerEditText.length() > 2) {
-                AlertDialog.Builder(this).setTitle("Add new customer")
-                    .setMessage(" Add ${newCustomerEditText.text} in base?")
-                    .setPositiveButton("YES") { _, _ ->
+                AlertDialog.Builder(this).setTitle(getString(R.string.addNewCustomer))
+                    .setMessage(getString(R.string.queAddNewCustomer,newCustomerEditText.text))
+                    .setPositiveButton(getString(R.string.addNewCustomerYes)) { _, _ ->
                         viewModel.addCustomer(newCustomerEditText.text.toString())
                         finish()
                     }
-                    .setNegativeButton("NO") { _, _ -> this.finish() }
+                    .setNegativeButton(getString(R.string.addNewCustomerNo)) { _, _ -> this.finish() }
                     .create().show()
             } else Snackbar.make(
-                addNewCustomerLayout,
-                "Shouldn't be empty and more than 2 characters.",
+                addNewCustomerLayout,getString(R.string.addNewCustomerError),
                 Snackbar.LENGTH_LONG
             ).show()
         }

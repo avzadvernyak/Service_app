@@ -2,7 +2,6 @@ package kampukter.service.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kampukter.service.data.RepairState
 import kampukter.service.data.RepairsView
 import kampukter.service.data.dao.RepairsViewDao
 import kotlinx.coroutines.Dispatchers
@@ -20,12 +19,12 @@ class RepairsViewRepository(private val repairsViewDao: RepairsViewDao) {
         repairsViewDao.getRepairsBySNandCustomer(searchSNandCustomer)
 
     fun getSelectedItemsForSend(selected: List<Long>): LiveData<String> {
-        var resultString: String = ""
-        var result = MutableLiveData<String>()
+        var resultString = ""
+        val result = MutableLiveData<String>()
 
         GlobalScope.launch(context = Dispatchers.IO) {
             repairsViewDao.getSelectedItems(selected).forEach {
-                resultString = resultString + it.serialNumber + "," + it.modelName + "," + it.customerName +it.notes+ "\n"
+                resultString = resultString+it.serialNumber+","+it.modelName+","+it.customerName+","+it.defect+ "\n"
             }
             result.postValue(resultString)
         }

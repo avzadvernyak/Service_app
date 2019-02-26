@@ -44,7 +44,7 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
                 toggleItemSelection(item)
             } else actionModeCallback?.let { _ ->
                 if (item.issueDate == null) {
-                    Log.d("blablabla", "Edit repair"+item.issueDate.toString())
+                    Log.d("blablabla", "Edit repair" + item.issueDate.toString())
                     (context as AppCompatActivity).startActivity(
                         Intent(
                             context,
@@ -55,9 +55,9 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
                                 item.id.toString()
                             )
                         })
-                    Log.d("blablabla", "Edit repair"+item.issueDate.toString())
+                    Log.d("blablabla", "Edit repair" + item.issueDate.toString())
                 } else {
-                    Log.d("blablabla", "View repairs-"+item.issueDate.toString())
+                    Log.d("blablabla", "View repairs-" + item.issueDate.toString())
                     (context as AppCompatActivity).startActivity(
                         Intent(
                             context,
@@ -108,7 +108,7 @@ class RepairAdapter(private val context: Context) : RecyclerView.Adapter<RepairV
             override fun getNewListSize(): Int = repairs.size
 
             override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                items[oldItemPosition].id == repairs[newItemPosition].id
+                items[oldItemPosition] == repairs[newItemPosition]
         })
         items = repairs
         diff.dispatchUpdatesTo(this)
