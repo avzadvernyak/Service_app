@@ -13,18 +13,28 @@ class RepairRepository(private val repairDao: RepairDao) {
 
     fun getAll(): LiveData<List<Repair>> = repairDao.getAll()
 
-    suspend fun delAllRecords() = repairDao.deleteAll()
-    suspend fun add(repair: Repair) {
-        repairDao.insert(repair)
+    fun delAllRecords() {
+        GlobalScope.launch(context = Dispatchers.IO) { repairDao.deleteAll() }
     }
-    suspend fun endRepair(repair:Repair){repairDao.update(repair)}
+
+    fun add(repair: Repair) {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            repairDao.insert(repair)
+        }
+    }
+
+    fun endRepair(repair: Repair) {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            repairDao.update(repair)
+        }
+    }
 
     fun getStateRepair(serialNumber: String): LiveData<RepairState> {
         var result = MutableLiveData<RepairState>()
         GlobalScope.launch(context = Dispatchers.IO) {
             result.postValue(
                 when (repairDao.getRepairState(serialNumber)) {
-                    null ->  RepairState.Success
+                    null -> RepairState.Success
                     //0L -> RepairState.Failure("In Work")
                     else -> RepairState.Failure("Close")
                 }

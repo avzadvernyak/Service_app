@@ -1,6 +1,5 @@
 package kampukter.service.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -10,9 +9,6 @@ import kampukter.service.data.repository.CustomerRepository
 import kampukter.service.data.repository.ModelsRepository
 import kampukter.service.data.repository.RepairRepository
 import kampukter.service.data.repository.RepairsViewRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class ServiceViewModel(
     private val modelsRepository: ModelsRepository,
@@ -37,33 +33,26 @@ class ServiceViewModel(
     val repair = repairRepository.getAll()
 
     fun addRepair(repair: Repair) {
-        GlobalScope.launch(context = Dispatchers.IO) {
-            repairRepository.add(repair)
-        }
+        repairRepository.add(repair)
     }
 
     fun delAllRepair() {
-        GlobalScope.launch(context = Dispatchers.IO) {
-            repairRepository.delAllRecords()
-        }
+        repairRepository.delAllRecords()
     }
 
-    lateinit var repairForSave: Repair
+    var repairForSave: Repair? = null
     fun putRepairForSave(repair: Repair) {
         repairForSave = repair
     }
+
     fun endRepairIssue() {
-        repairForSave.let {
-            GlobalScope.launch(context = Dispatchers.IO) {
-                repairRepository.endRepair(it)
-            }
+        repairForSave?.let {
+            repairRepository.endRepair(it)
         }
     }
 
     fun endRepair(repair: Repair) {
-        GlobalScope.launch(context = Dispatchers.IO) {
-            repairRepository.endRepair(repair)
-        }
+        repairRepository.endRepair(repair)
     }
 
     /*
@@ -144,17 +133,8 @@ class ServiceViewModel(
     }
 
     fun addModel(model: String) {
-        GlobalScope.launch(context = Dispatchers.IO) {
-            modelsRepository.add(Models(title = model))
-        }
+        modelsRepository.add(Models(title = model))
     }
-
-    fun delAll() {
-        GlobalScope.launch(context = Dispatchers.IO) {
-            modelsRepository.delAllRecords()
-        }
-    }
-
 
     /*
     * Customer Entity
@@ -182,8 +162,6 @@ class ServiceViewModel(
         Transformations.switchMap(_idCustomer) { id -> customerRepository.getCustomerId(id) }
 
     fun addCustomer(name: String) {
-        GlobalScope.launch(context = Dispatchers.IO) {
-            customerRepository.add(Customer(title = name))
-        }
+        customerRepository.add(Customer(title = name))
     }
 }

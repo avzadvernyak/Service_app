@@ -3,6 +3,9 @@ package kampukter.service.data.repository
 import androidx.lifecycle.LiveData
 import kampukter.service.data.Customer
 import kampukter.service.data.dao.CustomerDao
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class CustomerRepository(private val customerDao: CustomerDao) {
 
@@ -11,7 +14,9 @@ class CustomerRepository(private val customerDao: CustomerDao) {
     fun getCustomerId(customerId: Long): LiveData<Customer> = customerDao.getModelId(customerId)
 
     suspend fun delAllRecords() = customerDao.deleteAll()
-    suspend fun add(customer: Customer) {
-        customerDao.insert(customer)
+    fun add(customer: Customer) {
+        GlobalScope.launch(context = Dispatchers.IO) {
+            customerDao.insert(customer)
+        }
     }
 }
