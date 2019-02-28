@@ -54,6 +54,7 @@ class ServiceApplication : Application() {
                                 )
                             )
                         }
+                        /*
                         GlobalScope.launch(context = Dispatchers.IO) {
                             get<ServiceDatabase>().customerDao().insertAll(
                                 listOf(
@@ -64,7 +65,7 @@ class ServiceApplication : Application() {
                                     Customer(title = "СТК Старобешево")
                                 )
                             )
-                        }
+                        }*/
 
                     }
                 }).build()

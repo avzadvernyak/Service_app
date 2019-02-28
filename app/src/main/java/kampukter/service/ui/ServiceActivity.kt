@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import kampukter.service.R
@@ -16,7 +15,6 @@ import kampukter.service.ui.BarCodeReadActivity.Companion.EXTRA_CODE
 import kampukter.service.ui.CustomerFragment.Companion.EXTRA_OWNER_ID
 import kampukter.service.ui.ModelFragment.Companion.EXTRA_MODEL_ID
 import kampukter.service.viewmodel.ServiceViewModel
-import kotlinx.android.synthetic.main.add_new_customer.*
 import kotlinx.android.synthetic.main.service_activity.*
 import org.koin.android.viewmodel.ext.viewModel
 import java.util.*
@@ -29,7 +27,7 @@ class ServiceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.service_activity)
-        setSupportActionBar(newRepairToolbar).apply { title=getString(R.string.addNewRepair) }
+        setSupportActionBar(newRepairToolbar).apply { title = getString(R.string.addNewRepair) }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -48,8 +46,8 @@ class ServiceActivity : AppCompatActivity() {
                 PICK_OWNER_REQUEST
             )
         }
-        var modelIdAdd: Long = 0L
-        var customerIdAdd: Long = 0L
+        var modelIdAdd = 0L
+        var customerIdAdd = 0L
 
 
         viewModel.modelId.observe(this, Observer { it ->
@@ -98,15 +96,18 @@ class ServiceActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s.toString().length > 4) {
-                    viewModel.setQuerySerialNumber("%"+s.toString()+"%")
+                    viewModel.setQuerySerialNumber("%" + s.toString() + "%")
                 }
             }
         })
         saveNewRepairButton.setOnClickListener {
             if (serialTextView.text.isNotEmpty() && modelIdAdd != 0L && customerIdAdd != 0L) {
                 viewModel.setQuerySNRepair(serialTextView.text.toString())
+                // TRUE if added new repair
+                setResult(AppCompatActivity.RESULT_OK, Intent().putExtra(EXTRA_CODE_ADD, true))
+                finish()
             } else Snackbar.make(
-                serviceActivityLayout,getString(R.string.addNewRepairError),
+                serviceActivityLayout, getString(R.string.addNewRepairError),
                 Snackbar.LENGTH_LONG
             ).show()
         }
@@ -138,5 +139,6 @@ class ServiceActivity : AppCompatActivity() {
         const val SCAN_CODE_REQUEST = 1
         const val PICK_MODEL_REQUEST = 2
         const val PICK_OWNER_REQUEST = 3
+        const val EXTRA_CODE_ADD = "EXTRA_CODE_ADD"
     }
 }

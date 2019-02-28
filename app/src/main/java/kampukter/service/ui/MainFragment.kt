@@ -13,12 +13,15 @@ import kampukter.service.R
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
 import org.koin.android.viewmodel.ext.viewModel
+import android.app.Activity.RESULT_OK
+import kampukter.service.ui.ServiceActivity.Companion.EXTRA_CODE_ADD
 
 
 private const val KEY_SELECTED_ITEMS = "KEY_SELECTED_ITEMS"
-private const val SEARCH_STRING = "SEARCH_STRING"
 
 class MainFragment : Fragment() {
+
+    private var repairAdd: Boolean = false
 
     private val viewModel by viewModel<ServiceViewModel>()
 
@@ -74,6 +77,8 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.setSupportActionBar(mainFragmentToolbar)
 
+        val layoutmanager = androidx.recyclerview.widget.LinearLayoutManager(context)
+
         repairAdapter = RepairAdapter(view.context).apply {
             enableActionMode(actionModeCallback) { count ->
                 actionMode?.title = getString(R.string.main_fragment_action_mode_title, count)
@@ -85,10 +90,14 @@ class MainFragment : Fragment() {
         }
         with(repairRecyclerView) {
             adapter = repairAdapter
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            layoutManager = layoutmanager
         }
+
         viewModel.repairsView.observe(this, Observer { repairs ->
-            Log.d("blablabla", "update repairsView")
+            if (repairAdd) {
+                layoutmanager.scrollToPosition(0)
+                repairAdd = false
+            }
             repairAdapter?.setRepair(repairs)
         })
         viewModel.repairToSend.observe(
@@ -107,7 +116,7 @@ class MainFragment : Fragment() {
         if (viewModel.getQuerySNandCustomer().isNullOrEmpty()) viewModel.clearSearchSNCustomer()
 
         addRepairButton.setOnClickListener {
-            startActivity(Intent(activity, ServiceActivity::class.java))
+            startActivityForResult(Intent(activity, ServiceActivity::class.java), PICK_RESULT_ADD)
         }
 
         savedInstanceState?.let { bundle ->
@@ -145,5 +154,20 @@ class MainFragment : Fragment() {
                     return true
                 }
             })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PICK_RESULT_ADD) {
+            if (resultCode == RESULT_OK) {
+                data?.extras?.getBoolean(EXTRA_CODE_ADD)?.let { result ->
+                    Log.d("blablabla", "Return from AddActivity " + repairAdd.toString())
+                    repairAdd = result
+                }
+            }
+        }
+    }
+
+    companion object {
+        const val PICK_RESULT_ADD = 1
     }
 }

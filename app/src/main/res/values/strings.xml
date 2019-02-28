@@ -6,9 +6,9 @@
     <string name="main_fragment_action_mode_title">Count: %1$d</string>
     <string name="idRepair">№:</string>
     <string name="beginDate">Принят:</string>
-    <string name="defect">дефект:</string>
+    <string name="defect">Дефект:</string>
     <string name="endDate">готов:</string>
-    <string name="notes">комментарий:</string>
+    <string name="notes">Комментарий:</string>
     <string name="customer">владелец:</string>
     <!-- repair edit -->
     <string name="addNewRepair">Create new repair</string>
@@ -29,7 +29,7 @@
     <string name="addNewRepairError">"Not all data entered.</string>
     <!-- add model -->
     <string name="enter_model">Enter model</string>
-    <string name="addNewModel">Add new model</string>
+    <string name="addNewModel">Adding new model</string>
     <string name="queAddNewModel">Add %1$s in base?</string>
     <string name="addNewModelYes">Yes</string>
     <string name="addNewModelNo">No</string>
@@ -37,11 +37,15 @@
     <string name="enterModel">Select model</string>
     <!-- add customer -->
     <string name="enter_customer">Enter device owner</string>
-    <string name="addNewCustomer">Add new customer</string>
+    <string name="addNewCustomer">Adding new customer</string>
     <string name="queAddNewCustomer">Add %1$s in base?</string>
     <string name="addNewCustomerYes">Yes</string>
     <string name="addNewCustomerNo">No</string>
     <string name="addNewCustomerError">Shouldn\'t be empty and more than 3 characters.</string>
     <string name="enterCustomer">Select device owner</string>
+    <!-- add repair -->
+    <string name="choice_customer">Choice customer</string>
+    <string name="choice_model">Choice model</string>
+    <string name="enter_or_scan_s_n">Enter or scan S/N</string>
 
 </resources>
