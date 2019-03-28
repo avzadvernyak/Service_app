@@ -1,5 +1,6 @@
 package kampukter.service.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kampukter.service.data.Repair
@@ -15,6 +16,11 @@ class RepairRepository(private val repairDao: RepairDao) {
 
     fun delAllRecords() {
         GlobalScope.launch(context = Dispatchers.IO) { repairDao.deleteAll() }
+    }
+    fun deleteSelected( selected: Set<Long>) {
+        Log.d("blablabla", "Rep"+selected.size.toString())
+        GlobalScope.launch(context = Dispatchers.IO) {
+            repairDao.deleteIdList(selected) }
     }
 
     fun add(repair: Repair) {

@@ -47,5 +47,9 @@
     <string name="choice_customer">Choice customer</string>
     <string name="choice_model">Choice model</string>
     <string name="enter_or_scan_s_n">Enter or scan S/N</string>
+    <!-- del repair -->
+    <string name="titleDelSelected">Delete selected</string>
+    <string name="questDelSelected">Select %1$s repairs, delete?</string>
+
 
 </resources>

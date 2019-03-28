@@ -14,7 +14,9 @@ import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
 import org.koin.android.viewmodel.ext.viewModel
 import android.app.Activity.RESULT_OK
+import androidx.appcompat.app.AlertDialog
 import kampukter.service.ui.ServiceActivity.Companion.EXTRA_CODE_ADD
+import kotlinx.android.synthetic.main.add_new_customer.*
 
 
 private const val KEY_SELECTED_ITEMS = "KEY_SELECTED_ITEMS"
@@ -39,7 +41,8 @@ class MainFragment : Fragment() {
                 }
                 R.id.action_2 -> repairAdapter?.let {
                     repairAdapter?.selectedItemIds?.let {
-                        viewModel.setSelected(it.toList())
+
+                        //viewModel.deleteSelected(it.toSet())
                     }
                 }
             }

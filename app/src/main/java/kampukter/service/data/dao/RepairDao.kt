@@ -2,6 +2,7 @@ package kampukter.service.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Query
 import kampukter.service.data.Repair
 
@@ -13,6 +14,9 @@ interface RepairDao : BasicDao<Repair> {
 
     @Query("delete from repair")
     suspend fun deleteAll()
+
+    @Query("delete from repair WHERE repair.id IN (:selected)")
+    fun deleteIdList(selected: Set<Long>)
 
     @Query(
         """SELECT *

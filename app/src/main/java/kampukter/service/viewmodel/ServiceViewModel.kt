@@ -39,6 +39,7 @@ class ServiceViewModel(
     fun delAllRepair() {
         repairRepository.delAllRecords()
     }
+    fun deleteSelected(selected: Set<Long>){repairRepository.deleteSelected(selected)}
 
     var repairForSave: Repair? = null
     fun putRepairForSave(repair: Repair) {
