@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_search"
-          android:title="Search"
-          android:icon="@drawable/ic_search"
-          app:showAsAction="ifRoom|collapseActionView"
-          app:actionViewClass="androidx.appcompat.widget.SearchView" />
+    <item
+            android:id="@+id/action_search"
+            android:icon="@drawable/ic_search"
+            android:title="Search"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            app:showAsAction="ifRoom|collapseActionView" />
+    <item
+            android:id="@+id/action_filter"
+            android:icon="@drawable/ic_filter"
+            android:title="Filter"
+            app:showAsAction="ifRoom|collapseActionView">
+        <menu>
+            <item
+                    android:id="@+id/action_filter_all"
+                    android:title="All" />
+            <item
+                    android:id="@+id/action_filter_in_work"
+                    android:icon="@drawable/ic_inwork"
+                    android:title="In work" />
+            <item
+                    android:id="@+id/action_filter_ready"
+                    android:icon="@drawable/ic_save"
+                    android:title="Ready" />
+            <item
+                    android:id="@+id/action_filter_issue"
+                    android:icon="@drawable/ic_done"
+                    android:title="Issue" />
+        </menu>
+    </item>
+    <item
+            android:id="@+id/action_create_backup"
+            android:icon="@drawable/ic_backup"
+            android:title="Backup"
+            app:showAsAction="ifRoom|collapseActionView" />
 
 </menu>

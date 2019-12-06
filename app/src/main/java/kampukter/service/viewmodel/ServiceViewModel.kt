@@ -1,20 +1,16 @@
 package kampukter.service.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import android.util.Log
+import androidx.lifecycle.*
 import kampukter.service.data.*
-import kampukter.service.data.repository.CustomerRepository
-import kampukter.service.data.repository.ModelsRepository
-import kampukter.service.data.repository.RepairRepository
-import kampukter.service.data.repository.RepairsViewRepository
+import kampukter.service.data.repository.*
 
 class ServiceViewModel(
     private val modelsRepository: ModelsRepository,
     private val customerRepository: CustomerRepository,
     private val repairRepository: RepairRepository,
-    private val repairsViewRepository: RepairsViewRepository
+    private val repairsViewRepository: RepairsViewRepository,
+    private val backupRepository: BackupRepository
 ) : ViewModel() {
 
     /*
@@ -39,7 +35,10 @@ class ServiceViewModel(
     fun delAllRepair() {
         repairRepository.delAllRecords()
     }
-    fun deleteSelected(selected: Set<Long>){repairRepository.deleteSelected(selected)}
+
+    fun deleteSelected(selected: Set<Long>) {
+        repairRepository.deleteSelected(selected)
+    }
 
     var repairForSave: Repair? = null
     fun putRepairForSave(repair: Repair) {
@@ -68,23 +67,74 @@ class ServiceViewModel(
 
     val repairsId: LiveData<RepairsView> =
         Transformations.switchMap(_queryId) { query -> repairsViewRepository.getRepairsById(query) }
+    /*
+    Новый фрагмент, включение фильтров
+     */
+    private val queryLiveData = MutableLiveData<String>()
+    val filterLiveData = MutableLiveData<Filter>().apply { postValue(Filter.ALL) }
+    fun setQueryString(query: String?) {
+        queryLiveData.postValue(query)
+    }
+    fun getQueryString() = queryLiveData.value
 
+    fun setFilter(filter: Filter) {
+        filterLiveData.postValue(filter)
+    }
+
+
+    private val repairFilterLiveData: LiveData<RepairsFilter> = MediatorLiveData<RepairsFilter>().apply {
+
+        var lastQuery: String? = null
+        var lastFilter: Filter? = null
+
+        fun update() {
+            val filter = lastFilter
+            if (filter == null) return
+            postValue(RepairsFilter(filterSwitch = filter, searchString = lastQuery))
+        }
+
+        addSource(queryLiveData) {
+            lastQuery = it
+            update()
+        }
+
+        addSource(filterLiveData) {
+            lastFilter = it
+            update()
+        }
+
+    }
+    val repairsView: LiveData<List<RepairsView>> =
+        Transformations.switchMap(repairFilterLiveData) { query -> repairsViewRepository.getRepairsBySNandCustomer(query) }
+    /*
+    Конец нового фрагмента
+     */
+
+    /*
     private val _querySNandCustomer = MutableLiveData<String>()
+
+    private val _querySNandCustomer = MutableLiveData<RepairsFilter>()
+
     fun setQuerySNandCustomer(query: String) {
-        _querySNandCustomer.postValue(query)
+        val repairsFilter = _querySNandCustomer.value
+        repairsFilter?.copy(searchString = query)
+        _querySNandCustomer.postValue(repairsFilter)
     }
 
     fun getQuerySNandCustomer(): String? {
-        return _querySNandCustomer.value
+        val repairsFilter = _querySNandCustomer.value
+        return repairsFilter?.searchString
     }
 
     fun clearSearchSNCustomer() {
-        _querySNandCustomer.postValue("")
+        val repairsFilter = _querySNandCustomer.value
+        repairsFilter?.copy(searchString = "")
+        _querySNandCustomer.postValue(repairsFilter)
     }
 
     val repairsView: LiveData<List<RepairsView>> =
-        Transformations.switchMap(_querySNandCustomer) { query -> repairsViewRepository.getRepairsBySNandCustomer("%$query%") }
-
+        Transformations.switchMap(_querySNandCustomer) { query -> repairsViewRepository.getRepairsBySNandCustomer(query) }
+*/
 
     private val _querySeriaNumber = MutableLiveData<String>()
     fun setQuerySerialNumber(query: String) {
@@ -165,4 +215,6 @@ class ServiceViewModel(
     fun addCustomer(name: String) {
         customerRepository.add(Customer(title = name))
     }
+
+    fun createBackup(): Boolean = backupRepository.createBackupFile()
 }

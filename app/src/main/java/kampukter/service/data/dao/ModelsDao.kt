@@ -11,6 +11,9 @@ interface ModelsDao : BasicDao<Models> {
     @Query("select * from models")
     fun getAll(): LiveData<List<Models>>
 
+    @Query("SELECT * FROM models")
+    suspend fun getAllModels(): List<Models>
+
     @Query("select * from models where title like :query")
     fun search(query: String): LiveData<List<Models>>
 

@@ -11,6 +11,9 @@ interface CustomerDao : BasicDao<Customer> {
     @Query("select * from customer")
     fun getAll(): LiveData<List<Customer>>
 
+    @Query("SELECT * FROM customer")
+    suspend fun getAllCustomer(): List<Customer>
+
     @Query("select * from customer where title like :query")
     fun search(query: String): LiveData<List<Customer>>
 

@@ -16,12 +16,15 @@ import kampukter.service.ui.CustomerFragment.Companion.EXTRA_OWNER_ID
 import kampukter.service.ui.ModelFragment.Companion.EXTRA_MODEL_ID
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.service_activity.*
-import org.koin.android.viewmodel.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
+
 
 class ServiceActivity : AppCompatActivity() {
 
     private val viewModel by viewModel<ServiceViewModel>()
+    var modelIdAdd = 0L
+    var customerIdAdd = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +49,6 @@ class ServiceActivity : AppCompatActivity() {
                 PICK_OWNER_REQUEST
             )
         }
-        var modelIdAdd = 0L
-        var customerIdAdd = 0L
-
 
         viewModel.modelId.observe(this, Observer { it ->
             modelTextView.text = it.title
@@ -104,7 +104,7 @@ class ServiceActivity : AppCompatActivity() {
             if (serialTextView.text.isNotEmpty() && modelIdAdd != 0L && customerIdAdd != 0L) {
                 viewModel.setQuerySNRepair(serialTextView.text.toString())
                 // TRUE if added new repair
-                setResult(AppCompatActivity.RESULT_OK, Intent().putExtra(EXTRA_CODE_ADD, true))
+                setResult(RESULT_OK, Intent().putExtra(EXTRA_CODE_ADD, true))
                 finish()
             } else Snackbar.make(
                 serviceActivityLayout, getString(R.string.addNewRepairError),
@@ -113,11 +113,13 @@ class ServiceActivity : AppCompatActivity() {
         }
     }
 
+
     public override fun onActivityResult(
         requestCode: Int,
         resultCode: Int, data: Intent?
     ) {
-        if (resultCode == AppCompatActivity.RESULT_OK) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK) {
             when (requestCode) {
                 SCAN_CODE_REQUEST -> data?.extras?.getString(EXTRA_CODE)?.let { code ->
                     serialTextView.setText(code)

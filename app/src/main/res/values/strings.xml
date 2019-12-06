@@ -50,6 +50,7 @@
     <!-- del repair -->
     <string name="titleDelSelected">Delete selected</string>
     <string name="questDelSelected">Select %1$s repairs, delete?</string>
+    <string name="addingRepair">Adding a repair</string>
 
 
 </resources>

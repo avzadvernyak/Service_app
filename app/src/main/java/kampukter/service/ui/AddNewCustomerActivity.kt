@@ -7,7 +7,7 @@ import com.google.android.material.snackbar.Snackbar
 import kampukter.service.R
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.add_new_customer.*
-import org.koin.android.viewmodel.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddNewCustomerActivity : AppCompatActivity() {
 

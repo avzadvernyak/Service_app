@@ -9,14 +9,16 @@
         android:paddingTop="8dp"
         android:paddingBottom="0dp"
         android:background="@drawable/repair_item_bg">
+
     <TextView
             android:id="@+id/serialNumTextView"
-            android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
             android:layout_marginStart="8dp"
-            app:layout_constraintTop_toTopOf="@+id/textView2"/>
+            android:text="TextView"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="@+id/textView2" />
     <TextView
             android:id="@+id/modelNameTextView"
             android:text="TextView"

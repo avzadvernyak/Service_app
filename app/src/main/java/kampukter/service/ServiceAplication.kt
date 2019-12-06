@@ -4,15 +4,18 @@ import android.app.Application
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import kampukter.service.data.Customer
 import kampukter.service.data.Models
+import kampukter.service.data.dao.BackupDao
+import kampukter.service.data.dao.DefaultBackupDao
+import kampukter.service.data.dto.EmailSendBackupDto
+import kampukter.service.data.dto.SendBackupDto
 import kampukter.service.data.repository.*
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
@@ -20,11 +23,24 @@ class ServiceApplication : Application() {
 
     private val module = module {
 
-        viewModel { ServiceViewModel(get(), get(), get(), get()) }
+        viewModel { ServiceViewModel(get(), get(), get(), get(), get()) }
+
+        single<BackupDao> { DefaultBackupDao(androidContext()) }
+        single<SendBackupDto> { EmailSendBackupDto(androidContext()) }
+
         single { ModelsRepository(get<ServiceDatabase>().modelsDao()) }
         single { CustomerRepository(get<ServiceDatabase>().customerDao()) }
         single { RepairRepository(get<ServiceDatabase>().repairDao()) }
         single { RepairsViewRepository(get<ServiceDatabase>().repairsViewDao()) }
+        single {
+            BackupRepository(
+                get<ServiceDatabase>().repairDao(),
+                get<ServiceDatabase>().modelsDao(),
+                get<ServiceDatabase>().customerDao(),
+                get<BackupDao>(),
+                get<SendBackupDto>()
+            )
+        }
 
         single {
             Room.databaseBuilder(androidContext(), ServiceDatabase::class.java, "service.db")

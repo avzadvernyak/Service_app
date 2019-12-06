@@ -12,11 +12,10 @@ import androidx.lifecycle.Observer
 import kampukter.service.R
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
-import org.koin.android.viewmodel.ext.viewModel
 import android.app.Activity.RESULT_OK
-import androidx.appcompat.app.AlertDialog
+import kampukter.service.data.Filter
 import kampukter.service.ui.ServiceActivity.Companion.EXTRA_CODE_ADD
-import kotlinx.android.synthetic.main.add_new_customer.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 private const val KEY_SELECTED_ITEMS = "KEY_SELECTED_ITEMS"
@@ -54,6 +53,8 @@ class MainFragment : Fragment() {
             actionMode = mode
             mode?.menuInflater?.inflate(R.menu.main_fragment_menu, menu)
             mainFragmentToolbar.visibility = View.GONE
+            addRepairButton.visibility = View.GONE
+            actionMode?.subtitle = mainFragmentToolbar.subtitle
             return true
         }
 
@@ -65,6 +66,7 @@ class MainFragment : Fragment() {
             actionMode = null
             repairAdapter?.endSelection()
             mainFragmentToolbar.visibility = View.VISIBLE
+            addRepairButton.visibility = View.VISIBLE
         }
     }
 
@@ -115,9 +117,7 @@ class MainFragment : Fragment() {
                     startActivity(Intent.createChooser(sendIntent, "My Send"))
                 }
             })
-
-        if (viewModel.getQuerySNandCustomer().isNullOrEmpty()) viewModel.clearSearchSNCustomer()
-
+        if (viewModel.getQueryString().isNullOrEmpty()) viewModel.setQueryString("")
         addRepairButton.setOnClickListener {
             startActivityForResult(Intent(activity, ServiceActivity::class.java), PICK_RESULT_ADD)
         }
@@ -139,7 +139,7 @@ class MainFragment : Fragment() {
         inflater.inflate(R.menu.main_search_toolbar_menu, menu)
 
         val mySQMenu = (menu.findItem(R.id.action_search)?.actionView as? SearchView)
-        val searchString: CharSequence? = viewModel.getQuerySNandCustomer()
+        val searchString: CharSequence? = viewModel.getQueryString()
 
         if (!searchString.isNullOrEmpty()) {
             menu.findItem(R.id.action_search).expandActionView()
@@ -152,11 +152,38 @@ class MainFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    if (newText.isNullOrBlank()) viewModel.clearSearchSNCustomer()
-                    else viewModel.setQuerySNandCustomer(newText)
+                    if (newText.isNullOrBlank()) viewModel.setQueryString("")
+                    else viewModel.setQueryString(newText)
                     return true
                 }
             })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_filter_all -> {
+                viewModel.setFilter(Filter.ALL)
+                mainFragmentToolbar.subtitle = ""
+            }
+            R.id.action_filter_ready -> {
+                viewModel.setFilter(Filter.WITHOUT_DATE)
+                mainFragmentToolbar.subtitle = "Готовые"
+            }
+            R.id.action_filter_issue -> {
+                viewModel.setFilter(Filter.WITH_DATE)
+                mainFragmentToolbar.subtitle = "Выданные"
+            }
+            R.id.action_filter_in_work -> {
+                viewModel.setFilter(Filter.IN_WORK)
+                mainFragmentToolbar.subtitle = "В работе"
+            }
+            R.id.action_create_backup ->{
+                fragmentManager?.let {
+                    BackupDialogFragment.create().show(it, "makeBackup")}
+                //viewModel.createBackup()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

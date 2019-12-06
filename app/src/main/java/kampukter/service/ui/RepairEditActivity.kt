@@ -12,7 +12,7 @@ import kampukter.service.R
 import kampukter.service.data.Repair
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.repair_edit.*
-import org.koin.android.viewmodel.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class RepairEditActivity : AppCompatActivity() {

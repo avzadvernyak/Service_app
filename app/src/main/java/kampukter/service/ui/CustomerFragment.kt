@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kampukter.service.R
 import kampukter.service.viewmodel.ServiceViewModel
 import kotlinx.android.synthetic.main.customer_choice_fragment.*
-import org.koin.android.viewmodel.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CustomerFragment : Fragment() {
 
